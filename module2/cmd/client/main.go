@@ -1,0 +1,32 @@
+package main
+
+import (
+	"context"
+	"log"
+
+	"github.com/nahaktarun/grpc-module2/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+)
+
+func main() {
+
+	ctx := context.Background()
+
+	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer conn.Close()
+
+	client := proto.NewHelloServiceClient(conn)
+
+	res, err := client.SayHello(ctx, &proto.SayHelloRequest{Name: "Tarun"})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("response received: %s", res.Message)
+}
