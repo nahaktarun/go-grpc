@@ -9,3 +9,12 @@
 
 
 protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative proto/hello.proto
+
+
+## To access the api using the grpcurl:
+```curl
+grpcurl -d '{"name": "Chris"}' \
+-import-path ./proto -proto hello.proto \
+-plaintext localhost:50051 \
+hello.HelloService/SayHello
+```
