@@ -9,6 +9,7 @@ option go_package = "github.com/nahaktarun/grpc-module2/proto";
 service StreamingService {
   rpc StreamServerTime(StreamServerTimeRequest) returns (stream StreamServerTimeResponse);
   rpc LogStream(stream LogStreamRequest) returns (LogStreamResponse);
+  rpc Echo(stream EchoRequest) returns (stream EchoResponse);
 }
 
 message StreamServerTimeRequest {
@@ -36,4 +37,11 @@ enum LogLevel {
   LOG_LEVEL_WARNING = 3;
   LOG_LEVEL_ERROR = 4;
   LOG_LEVEL_FATAL = 5;
+}
+
+message EchoRequest {
+  string message = 1;
+}
+message EchoResponse {
+  string message = 1;
 }
