@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/nahaktarun/grpc-module2/internal/todo"
+	"github.com/nahaktarun/grpc-module2/internal/streaming"
 	"github.com/nahaktarun/grpc-module2/proto"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
@@ -34,11 +34,13 @@ func run(ctx context.Context) error {
 	grpcServer := grpc.NewServer()
 
 	// helloService := hello.Service{}
-	todoService := todo.NewService()
+	// todoService := todo.NewService()
+
+	streamService := &streaming.Service{}
 
 	// proto.RegisterHelloServiceServer(grpcServer, helloService)
 
-	proto.RegisterTodoServiceServer(grpcServer, todoService)
+	proto.RegisterStreamingServiceServer(grpcServer, streamService)
 
 	const addr = ":50051"
 
