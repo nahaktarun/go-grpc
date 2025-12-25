@@ -1,6 +1,8 @@
 package streaming
 
 import (
+	"io"
+	"log"
 	"time"
 
 	"github.com/nahaktarun/grpc-module2/proto"
@@ -45,4 +47,30 @@ func (s Service) StreamServerTime(request *proto.StreamServerTimeRequest, stream
 
 		}
 	}
+}
+
+func (s Service) LogStream(stream proto.StreamingService_LogStreamServer) error {
+
+	// initalize the count
+	count := 0
+
+	// loop through all the received messages
+	for {
+		// receive the message
+		// check if the stream is closed
+		// log messages
+		// increment count
+
+		logEntry, err := stream.Recv()
+		if err != nil {
+			if err == io.EOF {
+				return stream.SendAndClose(&proto.LogStreamResponse{EntriesLogged: int32(count)})
+			}
+			return err
+
+		}
+		log.Printf("Received log [%s]: %s %s", logEntry.GetTimestamp().AsTime(), logEntry.GetLevel().String(), logEntry.GetMessage())
+		count++
+	}
+
 }
